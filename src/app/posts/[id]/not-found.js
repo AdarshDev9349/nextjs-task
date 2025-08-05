@@ -6,9 +6,8 @@ export default function NotFound() {
       <div className="text-center max-w-md">
         <div className="mb-8">
           <div className="text-6xl font-bold text-gray-300 mb-4">404</div>
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Post Not Found</h1>
-          <p className="text-gray-600">
-            Sorry, we couldn't find the blog post you're looking for. It may have been moved or deleted.
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Post Not Found</h1>          <p className="text-gray-600">
+            Sorry, we couldn&apos;t find the blog post you&apos;re looking for. It may have been moved or deleted.
           </p>
         </div>
         

@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeftIcon, CalendarDaysIcon, ClockIcon, TagIcon } from '@heroicons/react/24/outline';
 
 // This would be your data fetching function
@@ -91,12 +92,14 @@ export default async function PostPage({ params }) {
       </nav>
 
       {/* Hero Section */}
-      <header className="relative">
-        <div className="relative h-96 overflow-hidden">
-          <img 
+      <header className="relative">        <div className="relative h-96 overflow-hidden">
+          <Image 
             src={post.image} 
             alt={post.title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
         </div>
@@ -134,11 +137,12 @@ export default async function PostPage({ params }) {
       {/* Article Content */}
       <main className="max-w-4xl mx-auto px-8 py-16">
         {/* Author info */}
-        <div className="flex items-center space-x-4 mb-12 pb-8 border-b border-gray-100">
-          <img 
+        <div className="flex items-center space-x-4 mb-12 pb-8 border-b border-gray-100">          <Image 
             src={post.authorAvatar} 
             alt={post.author}
-            className="w-16 h-16 rounded-full object-cover"
+            width={64}
+            height={64}
+            className="rounded-full object-cover"
           />
           <div>
             <h3 className="font-semibold text-lg text-gray-900">{post.author}</h3>

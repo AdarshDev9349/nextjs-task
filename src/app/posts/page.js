@@ -2,6 +2,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '@/components/navbar';
 import SearchBar from '@/components/SearchBar';
 import { useState } from 'react';
@@ -158,12 +159,13 @@ export default function PostsPage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post) => (
               <Link key={post.id} href={`/posts/${post.id}`} className="group">
-                <article className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col">
-                  <div className="relative overflow-hidden">
-                    <img 
+                <article className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 h-full flex flex-col">                  <div className="relative overflow-hidden h-48">
+                    <Image 
                       src={post.image} 
                       alt={post.title} 
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500" 
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                     <div className="absolute top-4 left-4">
                       <span className="inline-flex items-center px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-gray-800">
@@ -189,11 +191,12 @@ export default function PostsPage() {
                     </p>
                     
                     <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                      <div className="flex items-center text-xs text-gray-500">
-                        <img 
+                      <div className="flex items-center text-xs text-gray-500">                        <Image 
                           src={post.authorAvatar} 
                           alt={post.author}
-                          className="w-6 h-6 rounded-full mr-2"
+                          width={24}
+                          height={24}
+                          className="rounded-full mr-2"
                         />
                         <span className="font-medium">{post.author}</span>
                       </div>

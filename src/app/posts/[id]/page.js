@@ -3,18 +3,120 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeftIcon, CalendarDaysIcon, ClockIcon, TagIcon } from '@heroicons/react/24/outline';
 
+// Helper functions
+function generateAuthor() {
+  const authors = [
+    'Jennifer Taylor',
+    'Ryan Anderson', 
+    'Michael Chen',
+    'Sarah Johnson',
+    'David Wilson',
+    'Emily Rodriguez',
+    'James Thompson',
+    'Lisa Park'
+  ];
+  return authors[Math.floor(Math.random() * authors.length)];
+}
+
+function generateCategory() {
+  const categories = [
+    'Design',
+    'Technology',
+    'Business',
+    'UX Research',
+    'Development',
+    'Strategy',
+    'Innovation',
+    'User Experience'
+  ];
+  return categories[Math.floor(Math.random() * categories.length)];
+}
+
+function generateTags() {
+  const allTags = [
+    'UI Design',
+    'UX Design',
+    'Web Development',
+    'Mobile Design',
+    'User Research',
+    'Design Systems',
+    'Accessibility',
+    'Performance',
+    'React',
+    'Next.js',
+    'Tailwind CSS',
+    'TypeScript'
+  ];
+  
+  // Return 2-4 random tags
+  const numTags = Math.floor(Math.random() * 3) + 2;
+  const shuffled = allTags.sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, numTags);
+}
+
+function generateRandomDate() {
+  const start = new Date(2024, 0, 1);
+  const end = new Date();
+  const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+  return date.toISOString().split('T')[0];
+}
+
 // This would be your data fetching function
 async function getPost(id) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/posts/${id}`, {
-      cache: 'no-store', // For SSR, ensure fresh data
-    });
+    // For server-side, make direct API call instead of HTTP request
+    const API_URL = 'https://6890c3b3944bf437b5973f9c.mockapi.io/blogs';
     
-    if (!res.ok) {
+    const response = await fetch(`${API_URL}/${id}`);
+    
+    if (!response.ok) {
       return null;
     }
     
-    return res.json();
+    const post = await response.json();
+    
+    // Process the post data similar to the API route
+    const processedImage = post.image || 'https://picsum.photos/id/237/200/300';
+    
+    // Generate simple content for the blog post
+    const content = `# ${post.title}
+
+${post.description}
+
+## Overview
+
+This post explores key insights and practical approaches in modern design and development. Learn about best practices, implementation strategies, and real-world applications.
+
+## Key Takeaways
+
+- Understanding user needs and requirements
+- Implementing efficient design systems
+- Optimizing for performance and accessibility
+- Creating responsive and intuitive interfaces
+
+## Conclusion
+
+Effective digital experiences combine thoughtful design with solid technical implementation. Focus on solving real problems for users while maintaining clean, maintainable code.`;
+
+    const processedPost = {
+      id: post.id,
+      title: post.title,
+      excerpt: post.description.length > 150 
+        ? post.description.substring(0, 150) + '...' 
+        : post.description,
+      description: post.description,
+      content,
+      image: processedImage,
+      author: generateAuthor(),
+      authorAvatar: `https://i.pravatar.cc/200?img=${Math.floor(Math.random() * 50) + 1}`,
+      time: `${Math.floor(Math.random() * 8) + 2} min read`,
+      date: generateRandomDate(),
+      category: generateCategory(),
+      tags: generateTags(),
+      featured: Math.random() > 0.7
+    };
+    
+    return processedPost;
   } catch (error) {
     console.error('Error fetching post:', error);
     return null;
